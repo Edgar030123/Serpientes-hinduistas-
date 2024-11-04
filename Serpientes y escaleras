@@ -1,0 +1,68 @@
+import random
+
+# Tablero de Serpientes y Escaleras
+tablero = list(range(1, 101))
+
+# Serpientes y Escaleras
+serpientes = {16: 6, 47: 26, 49: 11, 56: 53, 62: 19, 87: 24, 93: 73, 95: 75}
+escaleras = {1: 38, 4: 14, 9: 31, 21: 42, 28: 84, 36: 44, 51: 67, 71: 91}
+
+# Preguntas fáciles y divertidas sobre el hinduismo
+preguntas = {
+    "¿Cuál es el color sagrado del hinduismo que representa la pureza?": "Blanco",
+    "¿Quién tiene cabeza de elefante y es conocido como el removedor de obstáculos?": "Ganesha",
+    "¿Qué animal es considerado sagrado en el hinduismo?": "Vaca",
+    "¿Qué festividad se celebra lanzando colores?": "Holi",
+    "¿Qué nombre recibe el dios del amor y el deseo?": "Kama",
+    "¿Qué instrumento toca el dios Krishna?": "Flauta",
+    "¿Cuál es el símbolo del amor y la alegría que también se encuentra en muchos templos?": "Corazón",
+    "¿Qué planta se utiliza en muchos rituales hindúes?": "Albahaca",
+}
+
+def lanzar_dado():
+    return random.randint(1, 6)
+
+def preguntar():
+    pregunta, respuesta_correcta = random.choice(list(preguntas.items()))
+    respuesta_usuario = input(pregunta + " ")
+    if respuesta_usuario.strip().lower() == respuesta_correcta.lower():
+        print("¡Respuesta correcta!")
+        return True
+    else:
+        print(f"Respuesta incorrecta. La respuesta correcta era: {respuesta_correcta}. Retrocedes.")
+        return False
+
+def mover_jugador(posicion):
+    dado = lanzar_dado()
+    print(f"Lanzaste el dado y sacaste un {dado}.")
+    nueva_posicion = posicion + dado
+
+    if nueva_posicion > 100:
+        print("Te has pasado del 100, sigues en la misma posición.")
+        return posicion
+
+    # Verificar si hay una serpiente o una escalera
+    if nueva_posicion in serpientes:
+        print(f"Caíste en una serpiente, bajas a {serpientes[nueva_posicion]}.")
+        return serpientes[nueva_posicion]
+    elif nueva_posicion in escaleras:
+        print(f"Subes por una escalera a {escaleras[nueva_posicion]}.")
+        return escaleras[nueva_posicion]
+
+    return nueva_posicion
+
+def jugar():
+    posicion = 0
+    while posicion < 100:
+        input("Presiona Enter para lanzar el dado...")
+        posicion = mover_jugador(posicion)
+        print(f"Estás en la posición {posicion}.")
+        
+        if posicion < 100:
+            if not preguntar():
+                posicion = max(0, posicion - 5)  # Retrocede 5 espacios si falla
+
+    print("¡Felicidades! Has llegado a la meta.")
+
+if __name__ == "__main__":
+    jugar()
